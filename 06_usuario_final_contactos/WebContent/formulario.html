@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="ISO-8859-1">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<title>Insert title here</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> 
+<script type="text/javascript">
+	function peticionService(){
+		var urlBase="http://localhost:9000/contactos";
+		urlBase+="/"+$("#nombre").val()+"/"+$("#email").val()+"/"+$("#edad").val();
+		//alert(urlBase);
+		$.ajax({
+			"url":urlBase,
+			"type":"GET",
+			"contentType":"application/json"
+		}).done(
+			function(data){
+				//alert(JSON.stringify(data));
+				mostrarTabla(data);
+			}
+		);
+		//alert("operacion realizada");
+	}
+	function mostrarTabla(data){	
+		//if(!$.isEmptyObject(data)){
+			var tabla="<table class='table table-striped'><tr><th>Nombre</th><th>Email</th><th>Edad</th></tr>";
+			for(var i=0;i<data.length;i++){
+				tabla+="<tr><td>"+data[i].nombre+"</td><td>"+data[i].email+"</td><td>"+data[i].edad+"</td></tr>";			
+			}
+			tabla+="</table>";
+			$("#resultado").html(tabla);
+		//}
+	}
+</script>
+</head>
+<body>
+	<h1>Altas - Modificaciones de contactos</h1>		
+		<br/>
+		<div class="form-group">
+			<label>Nombre:</label>
+			<input type="text" id="nombre" class="form-control" style="width:50%"/>
+		</div>
+		<div class="form-group">
+			<label>Email:</label>
+			<input type="text" id="email" class="form-control" style="width:50%"/>
+		</div>
+		<div class="form-group">
+			<label>Edad</label>
+			<input type="text" id="edad" class="form-control" style="width:50%"/>
+		</div>
+		<div class="form-group">
+			<button onclick="peticionService();">Guardar/acutalizar</button>
+		</div>
+		<br><br/>
+		<div id="resultado">
+		</div>
+</body>
+</html>
